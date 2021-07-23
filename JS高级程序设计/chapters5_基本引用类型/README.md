@@ -559,7 +559,17 @@ _如果第一个参数为字符串只替换第一个字符串，要想替换全�
 可以使用这个方法将字符串某个字符串全部替换成其他字符串
 
 ```javascript
-const text = "cat bat sat fat";
-const ret = text.replace(/at/g, "one");
-console.log(ret); //cone bone sone fone
+/**
+ * 替换部分子字符串
+ * @param str 全部字符串
+ * @param replace 要替换的子字符串
+ * @param result 替换后的子字符串
+ */
+
+function replace(str, replace, result) {
+  const reg = new RegExp(replace, "g");
+  return str.replace(reg, result);
+}
+
+console.log(replace("hello world", "world", "javascript")); //hello javascript
 ```

@@ -6,6 +6,7 @@ console.log(s1.charAt(4)); // ""
 
 /**
  * 提取子字符串方法
+ *
  */
 console.log("######提取子字符串方法#######");
 const s2 = s1.slice(1, 4);
@@ -71,4 +72,18 @@ console.log(s4.includes("baz")); //true
 console.log("######字符串模式匹配方法#######");
 const text = "cat bat sat fat";
 const ret = text.replace(/at/g, "one");
-console.log(ret); //cone bone sone fone
+console.log(ret); //cone bone sone
+
+/**
+ * 替换部分子字符串
+ * @param str 字符串
+ * @param replace 要替换的子字符串
+ * @param result 替换后的子字符串
+ */
+
+function replace(str, replace, result) {
+  const reg = new RegExp(replace, "g");
+  return str.replace(reg, result);
+}
+
+console.log(replace("hello world", "world", "javascript")); //hello javascript
