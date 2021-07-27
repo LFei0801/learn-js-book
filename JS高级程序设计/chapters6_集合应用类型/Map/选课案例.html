@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>选课案例</title>
+    <style>
+      .select-lesson {
+        width: 400px;
+        height: 150px;
+        display: flex;
+        border: 2px solid silver;
+        align-items: center;
+      }
+      ul {
+        list-style: none;
+        padding: 10px;
+        width: 50%;
+      }
+      ul li {
+        font-size: 20px;
+        width: 100%;
+        padding: 5px;
+        border: solid 1px silver;
+        position: relative;
+      }
+      ul li a {
+        text-decoration: none;
+        background-color: teal;
+        border-radius: 4px;
+        text-align: center;
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        color: black;
+        position: absolute;
+        right: 5px;
+        top: calc(50% - 15px);
+      }
+      .render-box {
+        width: 50%;
+        height: 100%;
+        margin-left: 10px;
+        border-left: solid 4px silver;
+      }
+
+      .render-box p {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .render-box span {
+        background: teal;
+        padding: 5px;
+        border-radius: 4px;
+        margin: 2px;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="select-lesson">
+      <ul>
+        <li>
+          <span>javascript</span>
+          <a href="#">+</a>
+        </li>
+        <li>
+          <span>CSS</span>
+          <a href="#">+</a>
+        </li>
+        <li>
+          <span>HTML5</span>
+          <a href="#">+</a>
+        </li>
+        <li>
+          <span>Golang</span>
+          <a href="#">+</a>
+        </li>
+      </ul>
+      <div class="render-box">
+        <strong id="count">你选择了0节课</strong>
+        <p id="lists"></p>
+      </div>
+    </div>
+
+    <script>
+      class Lesson {
+        constructor() {
+          this.lis = document.querySelectorAll("li");
+          this.countEle = document.getElementById("count");
+          this.listEle = document.querySelector("#lists");
+          this.map = new WeakMap();
+        }
+        run() {
+          [...this.lis].forEach((li) => {
+            li.querySelector("a").addEventListener("click", (e) => {
+              const state = li.getAttribute("select");
+              const a = e.target;
+              if (state) {
+                li.removeAttribute("select");
+                this.map.delete(li);
+                a.innerHTML = "+";
+                a.style.backgroundColor = "teal";
+              } else {
+                li.setAttribute("select", true);
+                this.map.set(li);
+                a.innerHTML = "-";
+                a.style.backgroundColor = "red";
+              }
+              this.render();
+            });
+          });
+        }
+        count() {
+          return [...this.lis].reduce((count, li) => {
+            return (count += this.map.has(li));
+          }, 0);
+        }
+        lists() {
+          const lis = [...this.lis]
+            .filter((li) => this.map.has(li))
+            .map((li) => {
+              return `<span>${li.querySelector("span").innerHTML}</span>`;
+            });
+          return lis.join("");
+        }
+        render() {
+          this.countEle.innerHTML = `你选择了${this.count()}节课`;
+          this.listEle.innerHTML = this.lists();
+        }
+      }
+      new Lesson().run();
+    </script>
+  </body>
+</html>
