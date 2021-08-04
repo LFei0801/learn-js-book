@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      div {
+        width: 200px;
+        height: 200px;
+        background-color: yellowgreen;
+        position: absolute;
+      }
+    </style>
+  </head>
+  <body>
+    <div></div>
+
+    <script>
+      function interval(callback, delay = 50) {
+        return new Promise((resolve, reject) => {
+          const id = setInterval(() => callback(id, resolve), delay);
+        });
+      }
+      // 方块移动
+      interval((id, resolve) => {
+        const div = document.querySelector("div");
+        let left = parseInt(getComputedStyle(div).left);
+        div.style.left = left + 10 + "px";
+        if (left >= 400) {
+          clearInterval(id);
+          resolve(div);
+        }
+      })
+        // 方块变窄;
+        .then((div) => {
+          interval((id, resolve) => {
+            let width = parseInt(getComputedStyle(div).width);
+            div.style.width = width - 10 + "px";
+            if (width < 100) {
+              clearInterval(id);
+              resolve(div);
+            }
+          })
+            // 改变颜色
+            .then((div) => {
+              div.style.backgroundColor = "red";
+            });
+        });
+    </script>
+  </body>
+</html>

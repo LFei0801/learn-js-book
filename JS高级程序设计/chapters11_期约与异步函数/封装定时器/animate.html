@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      div {
+        width: 200px;
+        height: 200px;
+        background-color: yellowgreen;
+        position: absolute;
+      }
+    </style>
+  </head>
+  <body>
+    <div></div>
+
+    <script>
+      function interval(callback, delay = 50) {
+        const id = setInterval(() => callback(id), delay);
+      }
+      interval((timeId) => {
+        // 向右移动方块
+        const div = document.querySelector("div");
+        let left = parseInt(getComputedStyle(div).left);
+        div.style.left = left + 10 + "px";
+        // 移动到400px 出停止移动
+        if (left >= 400) {
+          clearInterval(timeId);
+          // 使得方块变窄
+          interval((timeId) => {
+            let width = parseInt(getComputedStyle(div).width);
+            div.style.width = width - 10 + "px";
+            if (width <= 50) {
+              clearInterval(timeId);
+            }
+          }, 70);
+        }
+      });
+    </script>
+  </body>
+</html>
